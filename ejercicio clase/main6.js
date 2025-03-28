@@ -31,9 +31,9 @@ console.log('el código del alumno es' + objetoAlumno.cod_alumno);
 //objeto aula
 
 let objetoAula={
-    numeroMesas=32,
-    nombre = 'Asir1' ,
-    numero_perchas = 15 ;
+    numeroMesas :32,
+    nombre : 'Asir1' ,
+    numero_perchas : 15 
 };
 
 // sumar en una variable las mesas mas las perchas 
