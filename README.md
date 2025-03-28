@@ -1,1 +1,1 @@
-# ampliacion_marcas
+Trabajos y ejercicios de clase de ampliacion de marcas
