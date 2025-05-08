@@ -20,7 +20,7 @@
 
 
 </head>
-<body>
+<body onload="pintarDiana()">
     <canvas id="gameCanva" width="800px" height="400px"></canvas>
 
 
@@ -28,24 +28,97 @@
 
 
 <script>
-    const canvas = document.getElementById('gameCanva');
-    const ctx = canvas.getContext('2d');
+   const canvas = document.getElementById('gameCanva');
+        const ctx = canvas.getContext('2d');
 
-    let p1 ={
-        x:50,
-        y:150,
-        w:30,
-        h:60,
+        let p1 = {
+            x: 50,
+            y: 150,
+            w:30,
+            h:60,
+            paso: 5
+        };
+        const diana =
+        {
+            x: 700,
+            y: 150,
+            w:50,
+            h:50,
+            imagen: new Image()
 
-    };
+        };
+        let exite_bala= false
+        const circulo =
+      
 
-    function pintarJugador()
-    {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(p1.x,p1.y,p1.w,p1.h);
-    }
+        diana.imagen.src = "imagenes/objetivo.png";
 
-    pintarJugador();
+        function pintarJugador() 
+        {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(p1.x,p1.y,p1.w,p1.h);  
+           
+        }
+        function pintarDiana() 
+        {           
+            ctx.drawImage(diana.imagen,diana.x,diana.y,diana.w,diana.h);  
+        }
+        diana.imagen.onload = function (){ pintarDiana() };
+
+        function pintarBala()
+        {
+             //pintar circulo
+            ctx.fillStyle='black',
+            ctx.beginPath();
+            ctx.arc(bala.x,bala.y,6,0,Math.PI*2) // x, y, radio, ángulo inicial,
+            ctx.fill();  
+
+            bala.x= bala.x + bala.velocidad;
+
+            //si nos salimos del campo que no haya bala
+
+    
+        }
+
+        document.addEventListener('keydown',(e)=> {
+            if(e.key === 'ArrowUp')
+            {
+                p1.y = p1.y - p1.paso;
+            }
+            else if (e.key === 'ArrowDown')
+            {
+                p1.y = p1.y + p1.paso;
+            }
+
+            else if (e.key === 'spacebar')
+            {
+                if(!exite_bala)
+            {
+                exite_bala=ture;
+                bala={
+                    x: p1.x + p1.w,
+                    y: p1.y,
+                    velocidad: 7
+                }
+            }
+            }
+        })
+
+        function bucleJuego()
+        {
+            ctx.clearRect
+            pintarJugador();
+            pintarBala();
+            pintarBala();
+
+            requestAnimationFrame(bucleJuego)
+        }
+          
+        //arranque del juego
+        bucleJuego();
+
+        
+        
 </script>
 </body>
 </html>
