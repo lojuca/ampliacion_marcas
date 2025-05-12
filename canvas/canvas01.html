@@ -5,30 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        canvas{
-           background: grey;
-           border: 2px solid black;
-           display: block;
-           margin: 0 auto;
-
-
+        canvas
+        {
+            background: grey;
+            border: 2px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+        #b1
+        {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
         }
     </style>
-    
-    <script src="practica2.js"></script>
-       
-
 
 </head>
-<body onload="pintarDiana()">
-    <canvas id="gameCanva" width="800px" height="400px"></canvas>
+<body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <button id="b1">Disparar</button>
 
-
-
-
-
-<script>
-   const canvas = document.getElementById('gameCanva');
+    <script>
+        const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
         let p1 = {
@@ -44,44 +43,91 @@
             y: 150,
             w:50,
             h:50,
-            imagen: new Image()
+            imagen: new Image(),
+            es100:false,
+            es50:false
 
         };
-        let exite_bala= false
-        const circulo =
-      
+        let bala = null;
+        let existe_bala = false;
 
         diana.imagen.src = "imagenes/objetivo.png";
 
         function pintarJugador() 
         {
             ctx.fillStyle = 'red';
-            ctx.fillRect(p1.x,p1.y,p1.w,p1.h);  
-           
+            ctx.fillRect(p1.x,p1.y,p1.w,p1.h);    
         }
         function pintarDiana() 
         {           
-            ctx.drawImage(diana.imagen,diana.x,diana.y,diana.w,diana.h);  
+            if (diana.es100)
+            {
+                ctx.font = '20px Arial';
+                ctx.fillStyle = 'blue';
+                ctx.fillText("100 EBLB", diana.x -25, diana.y - 25);
+            }
+            else if ((diana.es50)&& (!diana.es100))
+            {
+                ctx.font = '15px Arial';
+                ctx.fillStyle = 'red';
+                ctx.fillText("50 EBLB", diana.x -25, diana.y - 25);              
+            }
+            else if ((!diana.es50) && (!diana.es100))
+            {
+                ctx.drawImage(diana.imagen,diana.x,diana.y,diana.w,diana.h);
+            }
+
         }
-        diana.imagen.onload = function (){ pintarDiana() };
 
         function pintarBala()
         {
-             //pintar circulo
-            ctx.fillStyle='black',
-            ctx.beginPath();
-            ctx.arc(bala.x,bala.y,6,0,Math.PI*2) // x, y, radio, ángulo inicial,
-            ctx.fill();  
+            if (existe_bala)
+            {
+                bala.x = bala.x + bala.velocidad;
+                
+                
+                ctx.fillStyle='black';
+                ctx.beginPath();
+                ctx.arc(bala.x ,bala.y,6,0,Math.PI*2);
+                //ctx.stroke();
+                ctx.fill();
 
-            bala.x= bala.x + bala.velocidad;
+                // hay colisión con diana
 
-            //si nos salimos del campo que no haya bala
+                // ES CENTRO ???????
+                if(
+                    (bala.x>=diana.x+20 &&  bala.x<=diana.x+30)
+                    &&
+                    (bala.y>=diana.y +20 && bala.y <=  diana.y + 30)
+                )
+                {
+                    console.log(100);
+                    diana.es100=true;
+                }
+                else if (
+                    (bala.x>=diana.x && bala.x <= diana.x + diana.w)
+                    &&
+                    (bala.y>=diana.y && bala.y <= diana.y + diana.h)
+                )
+                {
+                    console.log(50);
+                    diana.es50=true;
+                }
 
-    
+                
+
+                // si nos salimos del campo que no haya bala
+                if ((existe_bala) && (bala.x>canvas.width))
+                {
+                    existe_bala=false;
+                }  
+            }         
         }
+        //diana.imagen.onload = function (){  };
 
-        document.addEventListener('keydown',(e)=> {
-            if(e.key === 'ArrowUp')
+        document.addEventListener('keydown', (e) => {
+
+            if (e.key === 'ArrowUp')
             {
                 p1.y = p1.y - p1.paso;
             }
@@ -89,36 +135,52 @@
             {
                 p1.y = p1.y + p1.paso;
             }
-
-            else if (e.key === 'spacebar')
+            else if (e.code === 'Space')
             {
-                if(!exite_bala)
-            {
-                exite_bala=ture;
-                bala={
-                    x: p1.x + p1.w,
-                    y: p1.y,
-                    velocidad: 7
-                }
-            }
-            }
-        })
+                if (!existe_bala)
+                {
+                    existe_bala=true;
+                    bala = {
+                        x:p1.x + p1.w,
+                        y:p1.y,
+                        velocidad:7
+                    }
 
-        function bucleJuego()
+                }               
+            }
+
+        } );
+
+
+        document.getElementById('b1').addEventListener('click',() =>
         {
-            ctx.clearRect
+            if (!existe_bala)
+            {
+                existe_bala=true;
+                bala = {
+                    x:p1.x + p1.w,
+                    y:p1.y,
+                    velocidad:7
+                }
+
+            }    
+        }
+    );
+
+        function bucleJuego() 
+        {
+            ctx.clearRect (0,0,canvas.width,canvas.height);
+
             pintarJugador();
-            pintarBala();
+            pintarDiana();
             pintarBala();
 
-            requestAnimationFrame(bucleJuego)
+            requestAnimationFrame(bucleJuego);
         }
-          
-        //arranque del juego
+
+        // Arranque el juego
         bucleJuego();
 
-        
-        
-</script>
+    </script>
 </body>
 </html>
