@@ -3,64 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escondite inglés</title>
+    <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <script src="movilidad.js"></script>
 </head>
 <body>
-    <div class="base">
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-        <div class="cuadrados"></div>
-
-
-    </div>
-
-            <div class="jugador1">
-                    <img class="jugador01" src="imagenes/jugador 1.jpg" alt="">
-                <div class="botones" >
-                    <table class="btn_juga1">
-                        <td><button class="btna_juga1">Avanzar</button></td>
-                        <td><button class="btnd_juga1">Detenerse</button></td>
-                    </table>
-                </div >
-            </div>
-            
-            
-           
-             <div class="jugador2">
-                 <img class="jugador02" src="imagenes/jugador 2.jpg" alt="">
-                 <div class="botones" >
-                    <table class="btn_juga2">
-                        <td><button class="btna_juga2">Avanzar</button></td>
-                        <td><button class="btnd_juga2">Detenerse</button></td>
-                    </table>
-                </div >
-             </div>
-          
-            
-            
-                <div class="jugador3">
-                    <img class="jugador03" src="imagenes/jugador 3.jpg" alt="">
-                    <div class="botones" >
-                    <table class="btn_juga3">
-                        <td><button class="btna_juga3">Avanzar</button></td>
-                        <td><button class="btnd_juga3">Detenerse</button></td>
-                    </table>
-                </div >
-                </div>
-            
-
-   
-
-    </div>
-
     
-</body>
 </html>
+<body>
+ <div class="container">
+  <div class="base">
+    <div id="cuadrado" class="cuadrados">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+
+    <!-- Personajes -->
+    <div class="Personajes">
+      <div class="jugador">
+        <img id="goku" src="imagenes/jugador 1.jpg" alt="Goku">
+        <div class="buttons">
+          <button onclick="movimientosElegidos('goku','avanzar')" id="avanzar_goku">Avanzar</button>
+          <button onclick="movimientosElegidos('goku','detenerse')" id="detenerse_goku">Detenerse</button>
+        </div>
+      </div>
+
+      <div class="jugador">
+        <img id="naruto" src="imagenes/jugador 2.jpg" alt="Naruto">
+        <div class="buttons">
+          <button onclick="movimientosElegidos('naruto','avanzar')" id="avanzar_naruto" >Avanzar</button>
+          <button onclick="movimientosElegidos('naruto','detenerse')" id="detenerse_naruto">Detenerse</button>
+        </div>
+      </div>
+
+      <div class="jugador">
+        <img id="luffy" src="imagenes/jugador 3.jpg" alt="Luffy">
+        <div class="buttons">
+          <button onclick="movimientosElegidos('luffy','avanzar')" id="avanzar_luffy">Avanzar</button>
+          <button onclick="movimientosElegidos('luffy','detenerse')" id="detenerse_luffy">Detenerse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
