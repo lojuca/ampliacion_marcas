@@ -4,9 +4,7 @@
     height: 660px;
     margin: 0 auto;
     border-radius: 12px;
-    position: relative;
     padding: 10px;
-    box-sizing: border-box;
     border: 3px solid black;
 }
 .cuadrados{
@@ -39,7 +37,7 @@
 }
 
 .jugador03{
-    margin-left: 810px;
+    margin-left: 820px;
     margin-top: -190px;
 }
 .btn_juga1{
@@ -49,11 +47,12 @@ margin-left: 450px;
 
 .btn_juga2{
     margin-left: 610px;
-    margin-top: -26px;
+    margin-top: -27px;
 }
 .btn_juga3{
     margin-left: 780px;
-    margin-top: -26px;
+    margin-top: -27px;
     position: absolute;
+   
     
 }
