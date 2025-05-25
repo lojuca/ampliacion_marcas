@@ -1,60 +1,614 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="movilidad.js"></script>
+    <title>El Escondite Inglés Regular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .contenedor {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .tablero-juego {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .camino {
+            background-color: #8B4513;
+            width: 100px;
+            height: 550px;
+            border: 3px solid #654321;
+            position: relative;
+            margin: 20px;
+        }
+        
+        .casilla {
+            width: 90px;
+            height: 50px;
+            border: 1px solid #654321;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+        }
+        
+        .casilla-0 { bottom: 0; background-color: #228B22; }
+        .casilla-1 { bottom: 50px; background-color: #8B4513; }
+        .casilla-2 { bottom: 100px; background-color: #8B4513; }
+        .casilla-3 { bottom: 150px; background-color: #8B4513; }
+        .casilla-4 { bottom: 200px; background-color: #8B4513; }
+        .casilla-5 { bottom: 250px; background-color: #8B4513; }
+        .casilla-6 { bottom: 300px; background-color: #8B4513; }
+        .casilla-7 { bottom: 350px; background-color: #8B4513; }
+        .casilla-8 { bottom: 400px; background-color: #8B4513; }
+        .casilla-9 { bottom: 450px; background-color: #8B4513; }
+        .casilla-10 { bottom: 500px; background-color: #FFD700; }
+        
+        .jugador {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            position: absolute;
+            margin: 12px 5px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .jugador1 { background-color: red; }
+        .jugador2 { background-color: blue; }
+        .jugador3 { background-color: green; }
+        
+        .controles {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-jugador {
+            border: 2px solid #333;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            min-width: 200px;
+        }
+        
+        .control-jugador h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .botones-accion {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .boton-caminar {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .boton-caminar:hover {
+            background-color: #45a049;
+        }
+        
+        .boton-parar {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .boton-parar:hover {
+            background-color: #da190b;
+        }
+        
+        .boton-ejecutar {
+            background-color: #2196F3;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .boton-ejecutar:hover {
+            background-color: #0b7dda;
+        }
+        
+        .boton-ejecutar:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .info-bolsa {
+            background-color: #fffacd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+        }
+        
+        .info-dados {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .dado {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .dado-negro {
+            background-color: #333;
+            color: white;
+        }
+        
+        .dado-rojo {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .registro-juego {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 150px;
+            overflow-y: auto;
+            border: 2px solid #ddd;
+        }
+        
+        .estado {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .corazon {
+            color: red;
+            font-size: 14px;
+        }
+        
+        .ganador {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    
-</html>
-<body>
- <div class="container">
-  <div class="base">
-    <div id="cuadrado" class="cuadrados">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-    </div>
-    
-    <!-- Personajes -->
-    <div class="Personajes">
-     <div class="jugador">
-    <img id="goku" src="imagenes/jugador 1.jpg" alt="Goku">
-    <div class="buttons">
-        <button onclick="movimientosElegidos('goku','avanzar')" id="avanzar_goku">Avanzar</button>
-        <button onclick="movimientosElegidos('goku','detenerse')" id="detenerse_goku">Detenerse</button>
-    </div>
-</div>
-
-<div class="jugador">
-    <img id="naruto" src="imagenes/jugador 2.jpg" alt="Naruto">
-    <div class="buttons">
-        <button onclick="movimientosElegidos('naruto','avanzar')" id="avanzar_naruto">Avanzar</button>
-        <button onclick="movimientosElegidos('naruto','detenerse')" id="detenerse_naruto">Detenerse</button>
-    </div>
-</div>
-
-<div class="jugador">
-    <img id="luffy" src="imagenes/jugador 3.jpg" alt="Luffy">
-    <div class="buttons">
-        <button onclick="movimientosElegidos('luffy','avanzar')" id="avanzar_luffy">Avanzar</button>
-        <button onclick="movimientosElegidos('luffy','detenerse')" id="detenerse_luffy">Detenerse</button>
-    </div>
-</div>
-
+    <div class="contenedor">
+        <h1>🎯 El Escondite Inglés Regular 🎯</h1>
+        
+        <div class="estado" id="estadoJuego">¡Elige qué va a hacer cada jugador!</div>
+        
+        <div class="tablero-juego">
+            <div class="camino" id="camino">
+                <div class="casilla casilla-10">META</div>
+                <div class="casilla casilla-9">9</div>
+                <div class="casilla casilla-8">8</div>
+                <div class="casilla casilla-7">7</div>
+                <div class="casilla casilla-6">6</div>
+                <div class="casilla casilla-5">5</div>
+                <div class="casilla casilla-4">4</div>
+                <div class="casilla casilla-3">3</div>
+                <div class="casilla casilla-2">2</div>
+                <div class="casilla casilla-1">1</div>
+                <div class="casilla casilla-0">INICIO</div>
+            </div>
         </div>
-      </div>
+        
+        <div class="controles">
+            <div class="control-jugador">
+                <h3>🔴 Jugador 1 <span id="corazon1" class="corazon" style="display: none;">❤️</span></h3>
+                <p>Posición: <span id="pos1">0</span></p>
+                <div class="botones-accion">
+                    <button class="boton-caminar" onclick="elegirAccion(1, 'caminar')">Caminar</button>
+                    <button class="boton-parar" onclick="elegirAccion(1, 'parar')">Pararse</button>
+                </div>
+                <p>Acción: <span id="accion1">Sin elegir</span></p>
+            </div>
+            
+            <div class="control-jugador">
+                <h3>🔵 Jugador 2 <span id="corazon2" class="corazon" style="display: none;">❤️</span></h3>
+                <p>Posición: <span id="pos2">0</span></p>
+                <div class="botones-accion">
+                    <button class="boton-caminar" onclick="elegirAccion(2, 'caminar')">Caminar</button>
+                    <button class="boton-parar" onclick="elegirAccion(2, 'parar')">Pararse</button>
+                </div>
+                <p>Acción: <span id="accion2">Sin elegir</span></p>
+            </div>
+            
+            <div class="control-jugador">
+                <h3>🟢 Jugador 3 <span id="corazon3" class="corazon" style="display: none;">❤️</span></h3>
+                <p>Posición: <span id="pos3">0</span></p>
+                <div class="botones-accion">
+                    <button class="boton-caminar" onclick="elegirAccion(3, 'caminar')">Caminar</button>
+                    <button class="boton-parar" onclick="elegirAccion(3, 'parar')">Pararse</button>
+                </div>
+                <p>Acción: <span id="accion3">Sin elegir</span></p>
+            </div>
+        </div>
+        
+        <button class="boton-ejecutar" id="botonEjecutar" onclick="jugarTurno()" disabled>
+            🎲 Jugar Turno 🎲
+        </button>
+        
+        <div class="info-bolsa">
+            <h3>🎒 Estado de la Bolsa:</h3>
+            <div class="info-dados" id="contenidoBolsa"></div>
+            <p>Dados negros guardados: <span id="contarDadosNegros">0</span></p>
+        </div>
+        
+        <div class="registro-juego" id="registroJuego">
+            <strong>📝 Lo que ha pasado:</strong><br>
+            ¡Bienvenido al Escondite Inglés Regular!<br>
+        </div>
+        
+        <button onclick="empezarDeNuevo()" style="background-color: #ff9800; color: white; margin: 10px auto; display: block;">
+            🔄 Empezar de Nuevo
+        </button>
     </div>
-  </div>
-</div>
+
+    <script>
+        // Variables principales del juego
+        var jugadores = [
+            {posicion: 0, tieneCorazon: false, accion: null},
+            {posicion: 0, tieneCorazon: false, accion: null},
+            {posicion: 0, tieneCorazon: false, accion: null}
+        ];
+        
+        // Los dados que tenemos
+        var dadoNegro1 = [1, 1, 1, 1, 2, 2]; // Negro1: cuatro 1 y dos 2
+        var dadoNegro2 = [1, 1, 1, 1, 0, 0]; // Negro2: cuatro 1 y dos 0  
+        var dadoNegro3 = [1, 1, 0, 0, 0, 0]; // Negro3: dos 1 y cuatro 0
+        var dadoRojo = [1, 1, 1, 1, 1, 0];   // Rojo: cinco 1 y un 0
+        
+        // Estado de la bolsa de dados
+        var dadosEnBolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+        var dadosNegrosGuardados = [];
+        var juegoTerminado = false;
+        
+        // Función para empezar el juego
+        function empezarJuego() {
+            actualizarPantalla();
+            actualizarMostrarBolsa();
+            escribirMensaje("¡Juego iniciado! Todos los jugadores empiezan en la posición 0.");
+        }
+        
+        // Función para elegir qué hace cada jugador
+        function elegirAccion(numeroJugador, accion) {
+            if (juegoTerminado) {
+                alert("¡El juego ha terminado! Presiona 'Empezar de Nuevo' para jugar otra vez.");
+                return;
+            }
+            
+            jugadores[numeroJugador - 1].accion = accion;
+            var textoAccion = accion === 'caminar' ? 'Caminar' : 'Pararse';
+            document.getElementById('accion' + numeroJugador).textContent = textoAccion;
+            
+            escribirMensaje("Jugador " + numeroJugador + " eligió: " + textoAccion);
+            
+            // Verificar si todos los jugadores han elegido
+            var todosEligieron = true;
+            for (var i = 0; i < 3; i++) {
+                if (jugadores[i].accion === null) {
+                    todosEligieron = false;
+                    break;
+                }
+            }
+            
+            if (todosEligieron) {
+                document.getElementById('botonEjecutar').disabled = false;
+                document.getElementById('estadoJuego').textContent = "¡Todos eligieron! Presiona 'Jugar Turno'";
+            }
+        }
+        
+        // Función para jugar el turno
+        function jugarTurno() {
+            if (juegoTerminado) return;
+            
+            // Sacar un dado de la bolsa al azar
+            var numeroAzar = Math.floor(Math.random() * dadosEnBolsa.length);
+            var tipoDadoSacado = dadosEnBolsa[numeroAzar];
+            
+            // Tirar el dado para ver qué número sale
+            var numeroQueSalio = tirarUnDado(tipoDadoSacado);
+            
+            escribirMensaje("🎲 Se sacó de la bolsa: " + tipoDadoSacado + " y salió: " + numeroQueSalio);
+            
+            // Quitar el dado de la bolsa
+            dadosEnBolsa.splice(numeroAzar, 1);
+            
+            // Ver qué le pasa a cada jugador
+            for (var i = 0; i < 3; i++) {
+                procesarJugador(i, tipoDadoSacado, numeroQueSalio);
+            }
+            
+            // Si es un dado negro, guardarlo
+            if (tipoDadoSacado.includes('negro')) {
+                dadosNegrosGuardados.push(tipoDadoSacado);
+            }
+            
+            // Ver si hay que llenar la bolsa otra vez
+            if (dadosEnBolsa.length === 0 || tipoDadoSacado === 'rojo') {
+                dadosEnBolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+                dadosNegrosGuardados = [];
+                escribirMensaje("🎒 Se llenó la bolsa otra vez con todos los dados.");
+            }
+            
+            // Borrar las acciones de los jugadores
+            for (var i = 0; i < 3; i++) {
+                jugadores[i].accion = null;
+                document.getElementById('accion' + (i + 1)).textContent = 'Sin elegir';
+            }
+            
+            actualizarPantalla();
+            actualizarMostrarBolsa();
+            
+            // Ver si alguien ganó
+            verGanadores();
+            
+            document.getElementById('botonEjecutar').disabled = true;
+            if (!juegoTerminado) {
+                document.getElementById('estadoJuego').textContent = "¡Elige qué va a hacer cada jugador!";
+            }
+        }
+        
+        // Ver qué le pasa a cada jugador según el dado
+        function procesarJugador(indiceJugador, tipoDadoSacado, numeroQueSalio) {
+    var jugador = jugadores[indiceJugador];
+    var numeroJugador = indiceJugador + 1;
+
+    if (jugador.accion === 'parar') {
+        if (tipoDadoSacado === 'rojo') {
+            if (!jugador.tieneCorazon) {
+                jugador.tieneCorazon = true;
+                escribirMensaje("❤️ Jugador " + numeroJugador + " (parado) consiguió un corazón por dado rojo.");
+            } else {
+                escribirMensaje("Jugador " + numeroJugador + " (parado) ya tenía corazón, no pasa nada.");
+            }
+        } else {
+            escribirMensaje("Jugador " + numeroJugador + " (parado) - dado negro, no pasa nada.");
+        }
+    } else if (jugador.accion === 'caminar') {
+        if (tipoDadoSacado === 'negro1' || tipoDadoSacado === 'negro2' || tipoDadoSacado === 'negro3') {
+            // Avanzar el número que salió en el dado negro
+            var posicionAnterior = jugador.posicion;
+            jugador.posicion += numeroQueSalio;
+            escribirMensaje("📈 Jugador " + numeroJugador + " (caminando) avanzó " + numeroQueSalio + " casillas (de " + posicionAnterior + " a " + jugador.posicion + ")");
+        } else if (tipoDadoSacado === 'rojo') {
+            if (jugador.tieneCorazon) {
+                jugador.tieneCorazon = false;
+                escribirMensaje("💔 Jugador " + numeroJugador + " (caminando) perdió el corazón por dado rojo.");
+            } else {
+                // Tirar todos los dados negros guardados y retroceder
+                var totalParaRetroceder = tirarDadosGuardados();
+                var posicionAnterior = jugador.posicion;
+                jugador.posicion = Math.max(0, jugador.posicion - totalParaRetroceder);
+                escribirMensaje("📉 Jugador " + numeroJugador + " (caminando, sin corazón) retrocedió " + totalParaRetroceder + " casillas (de " + posicionAnterior + " a " + jugador.posicion + ")");
+            }
+        }
+    }
+}
+
+        
+        // Tirar todos los dados negros guardados
+        function tirarDadosGuardados() {
+            var total = 0;
+            var dadosTirados = [];
+
+            // Tirar cada dado negro guardado
+            for (var i = 0; i < dadosNegrosGuardados.length; i++) {
+                var tipoDado = dadosNegrosGuardados[i];
+                var valor = tirarUnDado(tipoDado);
+                total += valor;
+                dadosTirados.push(tipoDado + "(" + valor + ")");
+            }
+
+            escribirMensaje("🎲 Dados negros tirados: " + dadosTirados.join(", ") + " = Total: " + total);
+            return total;
+        }
+
+        // Tirar un solo dado
+        function tirarUnDado(tipoDado) {
+            var caras;
+            if (tipoDado === 'negro1') {
+                caras = dadoNegro1;
+            } else if (tipoDado === 'negro2') {
+                caras = dadoNegro2;
+            } else if (tipoDado === 'negro3') {
+                caras = dadoNegro3;
+            } else if (tipoDado === 'rojo') {
+                caras = dadoRojo;
+            }
+            
+            var numeroAzar = Math.floor(Math.random() * caras.length);
+            return caras[numeroAzar];
+        }
+        
+        // Actualizar lo que se ve en pantalla
+        function actualizarPantalla() {
+            // Quitar jugadores del tablero
+            var camino = document.getElementById('camino');
+            var jugadoresExistentes = camino.querySelectorAll('.jugador');
+            for (var i = 0; i < jugadoresExistentes.length; i++) {
+                jugadoresExistentes[i].remove();
+            }
+            
+            // Poner jugadores en sus posiciones
+            for (var i = 0; i < 3; i++) {
+                var jugador = jugadores[i];
+                var numeroJugador = i + 1;
+                
+                // Actualizar posición mostrada
+                document.getElementById('pos' + numeroJugador).textContent = jugador.posicion;
+                
+                // Mostrar o esconder corazón
+                var elementoCorazon = document.getElementById('corazon' + numeroJugador);
+                if (jugador.tieneCorazon) {
+                    elementoCorazon.style.display = 'inline';
+                } else {
+                    elementoCorazon.style.display = 'none';
+                }
+                
+                // Crear jugador en el tablero
+                var elementoJugador = document.createElement('div');
+                elementoJugador.className = 'jugador jugador' + numeroJugador;
+                elementoJugador.textContent = numeroJugador;
+                elementoJugador.style.left = (i * 30) + 'px';
+                
+                // Calcular dónde ponerlo (máximo posición 10)
+                var posicion = Math.min(jugador.posicion, 10);
+                var posicionAbajo = posicion * 50;
+                elementoJugador.style.bottom = posicionAbajo + 'px';
+                
+                camino.appendChild(elementoJugador);
+            }
+        }
+        
+        // Actualizar lo que se ve de la bolsa
+        function actualizarMostrarBolsa() {
+            var elementoContenidoBolsa = document.getElementById('contenidoBolsa');
+            elementoContenidoBolsa.innerHTML = '';
+            
+            for (var i = 0; i < dadosEnBolsa.length; i++) {
+                var dado = dadosEnBolsa[i];
+                var elementoDado = document.createElement('div');
+                elementoDado.className = 'dado';
+                
+                if (dado.includes('negro')) {
+                    elementoDado.className += ' dado-negro';
+                    elementoDado.textContent = dado.charAt(dado.length - 1); // Último número (1, 2, 3)
+                } else {
+                    elementoDado.className += ' dado-rojo';
+                    elementoDado.textContent = 'R';
+                }
+                
+                elementoContenidoBolsa.appendChild(elementoDado);
+            }
+            
+            document.getElementById('contarDadosNegros').textContent = dadosNegrosGuardados.length;
+        }
+        
+        // Ver si alguien ganó
+        function verGanadores() {
+            var ganadores = [];
+            for (var i = 0; i < 3; i++) {
+                if (jugadores[i].posicion >= 10) {
+                    ganadores.push(i + 1);
+                }
+            }
+            
+            if (ganadores.length > 0) {
+                juegoTerminado = true;
+                var textoGanador = "🎉 ¡GANADOR";
+                if (ganadores.length > 1) {
+                    textoGanador += "ES";
+                }
+                textoGanador += "! Jugador";
+                if (ganadores.length > 1) {
+                    textoGanador += "es";
+                }
+                textoGanador += " " + ganadores.join(", ") + " 🎉";
+                
+                var elementoEstado = document.getElementById('estadoJuego');
+                elementoEstado.textContent = textoGanador;
+                elementoEstado.className = 'estado ganador';
+                
+                escribirMensaje(textoGanador);
+            }
+        }
+        
+        // Escribir mensajes en el registro
+        function escribirMensaje(mensaje) {
+            var registroJuego = document.getElementById('registroJuego');
+            registroJuego.innerHTML += mensaje + "<br>";
+            registroJuego.scrollTop = registroJuego.scrollHeight;
+        }
+        
+        // Empezar el juego de nuevo
+        function empezarDeNuevo() {
+            jugadores = [
+                {posicion: 0, tieneCorazon: false, accion: null},
+                {posicion: 0, tieneCorazon: false, accion: null},
+                {posicion: 0, tieneCorazon: false, accion: null}
+            ];
+            
+            dadosEnBolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+            dadosNegrosGuardados = [];
+            juegoTerminado = false;
+            
+            document.getElementById('registroJuego').innerHTML = '<strong>📝 Lo que ha pasado:</strong><br>';
+            document.getElementById('estadoJuego').textContent = "¡Elige qué va a hacer cada jugador!";
+            document.getElementById('estadoJuego').className = 'estado';
+            document.getElementById('botonEjecutar').disabled = true;
+            
+            // Borrar acciones mostradas
+            for (var i = 1; i <= 3; i++) {
+                document.getElementById('accion' + i).textContent = 'Sin elegir';
+            }
+            
+            empezarJuego();
+        }
+        
+        // Empezar cuando se carga la página
+        window.onload = function() {
+            empezarJuego();
+        };
+    </script>
 </body>
+</html>
