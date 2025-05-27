@@ -304,32 +304,32 @@
     </div>
 
     <script>
-        // Variables principales del juego
+        
         var jugadores = [
             {posicion: 0, tieneCorazon: false, accion: null},
             {posicion: 0, tieneCorazon: false, accion: null},
             {posicion: 0, tieneCorazon: false, accion: null}
         ];
         
-        // Los dados que tenemos
-        var dadoNegro1 = [1, 1, 1, 1, 2, 2]; // Negro1: cuatro 1 y dos 2
-        var dadoNegro2 = [1, 1, 1, 1, 0, 0]; // Negro2: cuatro 1 y dos 0  
-        var dadoNegro3 = [1, 1, 0, 0, 0, 0]; // Negro3: dos 1 y cuatro 0
-        var dadoRojo = [1, 1, 1, 1, 1, 0];   // Rojo: cinco 1 y un 0
         
-        // Estado de la bolsa de dados
+        var dadoNegro1 = [1, 1, 1, 1, 2, 2]; 
+        var dadoNegro2 = [1, 1, 1, 1, 0, 0]; 
+        var dadoNegro3 = [1, 1, 0, 0, 0, 0]; 
+        var dadoRojo = [1, 1, 1, 1, 1, 0];   
+        
+        
         var dadosEnBolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
         var dadosNegrosGuardados = [];
         var juegoTerminado = false;
         
-        // Función para empezar el juego
+        
         function empezarJuego() {
             actualizarPantalla();
             actualizarMostrarBolsa();
             escribirMensaje("¡Juego iniciado! Todos los jugadores empiezan en la posición 0.");
         }
         
-        // Función para elegir qué hace cada jugador
+        
         function elegirAccion(numeroJugador, accion) {
             if (juegoTerminado) {
                 alert("¡El juego ha terminado! Presiona 'Empezar de Nuevo' para jugar otra vez.");
@@ -342,7 +342,7 @@
             
             escribirMensaje("Jugador " + numeroJugador + " eligió: " + textoAccion);
             
-            // Verificar si todos los jugadores han elegido
+            
             var todosEligieron = true;
             for (var i = 0; i < 3; i++) {
                 if (jugadores[i].accion === null) {
@@ -357,28 +357,28 @@
             }
         }
         
-        // Función para jugar el turno
+    
         function jugarTurno() {
             if (juegoTerminado) return;
             
-            // Sacar un dado de la bolsa al azar
+            
             var numeroAzar = Math.floor(Math.random() * dadosEnBolsa.length);
             var tipoDadoSacado = dadosEnBolsa[numeroAzar];
             
-            // Tirar el dado para ver qué número sale
+            
             var numeroQueSalio = tirarUnDado(tipoDadoSacado);
             
             escribirMensaje("🎲 Se sacó de la bolsa: " + tipoDadoSacado + " y salió: " + numeroQueSalio);
             
-            // Quitar el dado de la bolsa
+            
             dadosEnBolsa.splice(numeroAzar, 1);
             
-            // Ver qué le pasa a cada jugador
+            
             for (var i = 0; i < 3; i++) {
                 procesarJugador(i, tipoDadoSacado, numeroQueSalio);
             }
             
-            // Si es un dado negro, guardarlo
+            
             if (tipoDadoSacado.includes('negro')) {
                 dadosNegrosGuardados.push(tipoDadoSacado);
             }
@@ -390,7 +390,7 @@
                 escribirMensaje("🎒 Se llenó la bolsa otra vez con todos los dados.");
             }
             
-            // Borrar las acciones de los jugadores
+            
             for (var i = 0; i < 3; i++) {
                 jugadores[i].accion = null;
                 document.getElementById('accion' + (i + 1)).textContent = 'Sin elegir';
@@ -399,7 +399,7 @@
             actualizarPantalla();
             actualizarMostrarBolsa();
             
-            // Ver si alguien ganó
+            
             verGanadores();
             
             document.getElementById('botonEjecutar').disabled = true;
@@ -408,7 +408,7 @@
             }
         }
         
-        // Ver qué le pasa a cada jugador según el dado
+        
         function procesarJugador(indiceJugador, tipoDadoSacado, numeroQueSalio) {
     var jugador = jugadores[indiceJugador];
     var numeroJugador = indiceJugador + 1;
@@ -426,7 +426,7 @@
         }
     } else if (jugador.accion === 'caminar') {
         if (tipoDadoSacado === 'negro1' || tipoDadoSacado === 'negro2' || tipoDadoSacado === 'negro3') {
-            // Avanzar el número que salió en el dado negro
+            
             var posicionAnterior = jugador.posicion;
             jugador.posicion += numeroQueSalio;
             escribirMensaje("📈 Jugador " + numeroJugador + " (caminando) avanzó " + numeroQueSalio + " casillas (de " + posicionAnterior + " a " + jugador.posicion + ")");
@@ -435,7 +435,7 @@
                 jugador.tieneCorazon = false;
                 escribirMensaje("💔 Jugador " + numeroJugador + " (caminando) perdió el corazón por dado rojo.");
             } else {
-                // Tirar todos los dados negros guardados y retroceder
+                
                 var totalParaRetroceder = tirarDadosGuardados();
                 var posicionAnterior = jugador.posicion;
                 jugador.posicion = Math.max(0, jugador.posicion - totalParaRetroceder);
@@ -446,12 +446,12 @@
 }
 
         
-        // Tirar todos los dados negros guardados
+        
         function tirarDadosGuardados() {
             var total = 0;
             var dadosTirados = [];
 
-            // Tirar cada dado negro guardado
+            
             for (var i = 0; i < dadosNegrosGuardados.length; i++) {
                 var tipoDado = dadosNegrosGuardados[i];
                 var valor = tirarUnDado(tipoDado);
@@ -463,7 +463,7 @@
             return total;
         }
 
-        // Tirar un solo dado
+        
         function tirarUnDado(tipoDado) {
             var caras;
             if (tipoDado === 'negro1') {
@@ -480,24 +480,24 @@
             return caras[numeroAzar];
         }
         
-        // Actualizar lo que se ve en pantalla
+        
         function actualizarPantalla() {
-            // Quitar jugadores del tablero
+        
             var camino = document.getElementById('camino');
             var jugadoresExistentes = camino.querySelectorAll('.jugador');
             for (var i = 0; i < jugadoresExistentes.length; i++) {
                 jugadoresExistentes[i].remove();
             }
             
-            // Poner jugadores en sus posiciones
+            
             for (var i = 0; i < 3; i++) {
                 var jugador = jugadores[i];
                 var numeroJugador = i + 1;
                 
-                // Actualizar posición mostrada
+                
                 document.getElementById('pos' + numeroJugador).textContent = jugador.posicion;
                 
-                // Mostrar o esconder corazón
+                
                 var elementoCorazon = document.getElementById('corazon' + numeroJugador);
                 if (jugador.tieneCorazon) {
                     elementoCorazon.style.display = 'inline';
@@ -505,13 +505,13 @@
                     elementoCorazon.style.display = 'none';
                 }
                 
-                // Crear jugador en el tablero
+                
                 var elementoJugador = document.createElement('div');
                 elementoJugador.className = 'jugador jugador' + numeroJugador;
                 elementoJugador.textContent = numeroJugador;
                 elementoJugador.style.left = (i * 30) + 'px';
                 
-                // Calcular dónde ponerlo (máximo posición 10)
+                
                 var posicion = Math.min(jugador.posicion, 10);
                 var posicionAbajo = posicion * 50;
                 elementoJugador.style.bottom = posicionAbajo + 'px';
@@ -520,7 +520,7 @@
             }
         }
         
-        // Actualizar lo que se ve de la bolsa
+        
         function actualizarMostrarBolsa() {
             var elementoContenidoBolsa = document.getElementById('contenidoBolsa');
             elementoContenidoBolsa.innerHTML = '';
@@ -544,7 +544,7 @@
             document.getElementById('contarDadosNegros').textContent = dadosNegrosGuardados.length;
         }
         
-        // Ver si alguien ganó
+        
         function verGanadores() {
             var ganadores = [];
             for (var i = 0; i < 3; i++) {
@@ -573,14 +573,14 @@
             }
         }
         
-        // Escribir mensajes en el registro
+        // mensajes de registros de acciones
         function escribirMensaje(mensaje) {
             var registroJuego = document.getElementById('registroJuego');
             registroJuego.innerHTML += mensaje + "<br>";
             registroJuego.scrollTop = registroJuego.scrollHeight;
         }
         
-        // Empezar el juego de nuevo
+        
         function empezarDeNuevo() {
             jugadores = [
                 {posicion: 0, tieneCorazon: false, accion: null},
@@ -597,7 +597,7 @@
             document.getElementById('estadoJuego').className = 'estado';
             document.getElementById('botonEjecutar').disabled = true;
             
-            // Borrar acciones mostradas
+            
             for (var i = 1; i <= 3; i++) {
                 document.getElementById('accion' + i).textContent = 'Sin elegir';
             }
@@ -605,7 +605,7 @@
             empezarJuego();
         }
         
-        // Empezar cuando se carga la página
+        
         window.onload = function() {
             empezarJuego();
         };
